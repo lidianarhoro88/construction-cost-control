@@ -1,0 +1,43 @@
+project_code,cost_code,cost_category,budget_try
+P-101,01,Site works & excavation,57400000.0
+P-101,02,Foundations,90200000.0
+P-101,03,Structural concrete & steel,221400000.0
+P-101,04,Envelope & facade,114800000.0
+P-101,05,"MEP (mechanical, electrical, plumbing)",172200000.0
+P-101,06,Interior finishes,106600000.0
+P-101,07,Site overheads & management,57400000.0
+P-102,01,Site works & excavation,21700000.0
+P-102,02,Foundations,34100000.0
+P-102,03,Structural concrete & steel,83700000.0
+P-102,04,Envelope & facade,43400000.0
+P-102,05,"MEP (mechanical, electrical, plumbing)",65100000.0
+P-102,06,Interior finishes,40300000.0
+P-102,07,Site overheads & management,21700000.0
+P-103,01,Site works & excavation,101500000.0
+P-103,02,Foundations,159500000.0
+P-103,03,Structural concrete & steel,391500000.0
+P-103,04,Envelope & facade,203000000.0
+P-103,05,"MEP (mechanical, electrical, plumbing)",304500000.0
+P-103,06,Interior finishes,188500000.0
+P-103,07,Site overheads & management,101500000.0
+P-104,01,Site works & excavation,9800000.0
+P-104,02,Foundations,15400000.0
+P-104,03,Structural concrete & steel,37800000.0
+P-104,04,Envelope & facade,19600000.0
+P-104,05,"MEP (mechanical, electrical, plumbing)",29400000.0
+P-104,06,Interior finishes,18200000.0
+P-104,07,Site overheads & management,9800000.0
+P-105,01,Site works & excavation,32200000.0
+P-105,02,Foundations,50600000.0
+P-105,03,Structural concrete & steel,124200000.0
+P-105,04,Envelope & facade,64400000.0
+P-105,05,"MEP (mechanical, electrical, plumbing)",96600000.0
+P-105,06,Interior finishes,59800000.0
+P-105,07,Site overheads & management,32200000.0
+P-106,01,Site works & excavation,48300000.0
+P-106,02,Foundations,75900000.0
+P-106,03,Structural concrete & steel,186300000.0
+P-106,04,Envelope & facade,96600000.0
+P-106,05,"MEP (mechanical, electrical, plumbing)",144900000.0
+P-106,06,Interior finishes,89700000.0
+P-106,07,Site overheads & management,48300000.0

@@ -1,0 +1,22 @@
+change_order_id,project_code,cost_code,raised_on,status,amount_try,reason
+CO-101-01,P-101,02,2025-10-19,Approved,5779206.31,Additional MEP scope
+CO-101-02,P-101,01,2026-07-16,Pending,3936257.33,Additional MEP scope
+CO-102-01,P-102,06,2026-09-07,Pending,4460063.34,Material substitution
+CO-102-02,P-102,04,2026-06-20,Approved,4122791.55,Material substitution
+CO-102-03,P-102,06,2026-06-17,Pending,4363733.5,Material substitution
+CO-103-01,P-103,05,2026-10-13,Approved,18353892.56,Regulatory requirement
+CO-103-02,P-103,04,2026-07-10,Approved,17747060.32,Additional MEP scope
+CO-103-03,P-103,05,2025-09-25,Approved,25290208.18,Unforeseen ground conditions
+CO-103-04,P-103,06,2025-11-08,Approved,19206691.18,Unforeseen ground conditions
+CO-104-01,P-104,04,2026-10-05,Approved,2620042.25,Regulatory requirement
+CO-104-02,P-104,06,2026-07-11,Rejected,1271994.06,Additional MEP scope
+CO-104-03,P-104,06,2026-07-22,Approved,1291352.45,Additional MEP scope
+CO-104-04,P-104,05,2026-08-18,Rejected,3219347.5,Client design change
+CO-104-05,P-104,06,2026-07-08,Approved,3234736.07,Client design change
+CO-104-06,P-104,05,2026-10-04,Rejected,3690584.28,Regulatory requirement
+CO-104-07,P-104,04,2026-05-11,Pending,4195280.09,Client design change
+CO-104-08,P-104,05,2026-06-17,Approved,2527462.99,Regulatory requirement
+CO-104-09,P-104,06,2026-06-03,Pending,1643240.69,Additional MEP scope
+CO-105-01,P-105,01,2026-05-26,Approved,6635152.96,Unforeseen ground conditions
+CO-106-01,P-106,02,2025-11-01,Approved,3548308.52,Material substitution
+CO-106-02,P-106,01,2026-08-05,Pending,9038620.21,Unforeseen ground conditions

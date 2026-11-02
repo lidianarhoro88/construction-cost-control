@@ -1,0 +1,16 @@
+name: Build and test
+on: [push, pull_request, workflow_dispatch]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install -r requirements.txt
+      - run: python scripts/generate_data.py
+      - run: python scripts/build.py
+      - run: pytest -q
+      - name: Dashboard data is up to date
+        run: git diff --exit-code docs/data.json

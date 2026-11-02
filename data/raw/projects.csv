@@ -1,0 +1,7 @@
+project_code,project_name,district,project_type,start_date,planned_finish,budget_try
+P-101,Ataşehir Residential Tower,Ataşehir,Residential,2025-09-01,2027-11-01,820000000
+P-102,Pendik Logistics Warehouse,Pendik,Industrial,2026-03-01,2027-05-01,310000000
+P-103,Başakşehir Hospital Annex,Başakşehir,Healthcare,2025-05-01,2027-11-01,1450000000
+P-104,Kadıköy Office Refurbishment,Kadıköy,Commercial,2026-04-01,2027-04-01,140000000
+P-105,Esenyurt School Campus,Esenyurt,Education,2025-11-01,2027-07-01,460000000
+P-106,Sarıyer Villa Complex,Sarıyer,Residential,2025-07-01,2027-07-01,690000000

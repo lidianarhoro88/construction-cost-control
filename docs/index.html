@@ -1,0 +1,231 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Project Cost Control · Earned Value Dashboard</title>
+<meta name="description" content="Earned value dashboard for six construction projects in Istanbul: CPI, SPI, S-curves, cost variance by work package and change orders.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#F6F1EA;--card:#FFFCF7;--card2:#F9F4EC;--ink:#2A1A20;--ink2:#4A3740;--muted:#6E5A61;--wine:#5C2E3E;--wine2:#8C4C62;--gold:#9A7633;--gold2:#C7A46A;--line:rgba(92,46,62,.14);
+--ok:#2F7D5B;--warn:#B07A1F;--bad:#A3333D;--okbg:#E3F1E9;--warnbg:#F6EBD6;--badbg:#F6DFE1;color-scheme:light}
+@media (prefers-color-scheme:dark){:root{--bg:#171013;--card:#221820;--card2:#2A1E26;--ink:#F4EAE3;--ink2:#DCCDC6;--muted:#B5A3A9;--wine:#D49AAE;--wine2:#E4B6C5;--gold:#D9B977;--gold2:#E6CC92;--line:rgba(244,234,227,.11);
+--ok:#7CCBA2;--warn:#E3B868;--bad:#F2A1A8;--okbg:#1E3329;--warnbg:#3A2F1E;--badbg:#3D2125;color-scheme:dark}}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.55 "Plus Jakarta Sans",system-ui,sans-serif}
+.wrap{max-width:1240px;margin:0 auto;padding:28px 20px 60px}
+header{display:flex;justify-content:space-between;align-items:flex-end;gap:16px;flex-wrap:wrap;margin-bottom:24px}
+.eyebrow{font:500 .7rem "JetBrains Mono",monospace;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+h1{font:500 clamp(1.8rem,3.5vw,2.6rem)/1.1 Fraunces,Georgia,serif;margin:6px 0 6px;letter-spacing:-.01em}h1 em{color:var(--wine);font-weight:400}
+h2{font:500 1.25rem Fraunces,Georgia,serif;margin:0}
+.muted{color:var(--muted)}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin-bottom:18px}
+.kpi{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px 16px}
+.kpi small{display:block;font:500 .66rem "JetBrains Mono",monospace;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.kpi b{display:block;font:500 1.65rem Fraunces,Georgia,serif;margin-top:4px}.kpi span{font-size:.8rem;color:var(--muted)}
+.grid{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(0,1fr);gap:16px;margin-bottom:16px}
+@media (max-width:920px){.grid{grid-template-columns:1fr}}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:18px 20px}
+.card-head{display:flex;justify-content:space-between;align-items:baseline;gap:12px;flex-wrap:wrap;margin-bottom:12px}
+.chart{position:relative;height:300px}
+table{width:100%;border-collapse:collapse;font-size:.88rem}
+th{font:500 .65rem "JetBrains Mono",monospace;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);text-align:left;padding:8px;border-bottom:1px solid var(--line);cursor:pointer;white-space:nowrap}
+th.num,td.num{text-align:right}
+td{padding:10px 8px;border-bottom:1px solid var(--line);vertical-align:middle}
+tbody tr{cursor:pointer;transition:background .15s}tbody tr:hover,tbody tr.sel{background:var(--card2)}
+tbody tr.sel td:first-child{box-shadow:inset 3px 0 0 var(--wine)}
+.pill{font-size:.72rem;font-weight:700;padding:3px 9px;border-radius:99px;white-space:nowrap}
+.pill.ok{background:var(--okbg);color:var(--ok)}.pill.warn{background:var(--warnbg);color:var(--warn)}.pill.bad{background:var(--badbg);color:var(--bad)}
+.bar{height:6px;border-radius:3px;background:var(--line);width:90px;display:inline-block;vertical-align:middle;margin-right:6px}.bar i{display:block;height:100%;border-radius:3px;background:var(--wine)}
+.neg{color:var(--bad)}.pos{color:var(--ok)}
+select{font:600 .9rem "Plus Jakarta Sans",sans-serif;color:var(--ink);background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:8px 10px}
+.co{display:grid;gap:8px;max-height:300px;overflow:auto}
+.co div{display:grid;grid-template-columns:auto 1fr auto;gap:10px;align-items:center;padding:10px 12px;border:1px solid var(--line);border-radius:10px;background:var(--card2);font-size:.86rem}
+.co code{font:500 .75rem "JetBrains Mono",monospace;color:var(--gold)}
+.legend{display:flex;gap:14px;flex-wrap:wrap;font-size:.8rem;color:var(--muted)}.legend i{display:inline-block;width:10px;height:10px;border-radius:2px;margin-right:5px;vertical-align:-1px}
+footer{margin-top:26px;font-size:.82rem;color:var(--muted);display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
+footer a{color:var(--wine)}
+.note{font-size:.82rem;color:var(--muted);margin-top:10px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div>
+      <div class="eyebrow">Project controls · Earned value management</div>
+      <h1>Six projects. <em>One honest view of cost and time.</em></h1>
+      <div class="muted" id="status"></div>
+    </div>
+    <div class="legend"><span><i style="background:var(--ok)"></i>On track</span><span><i style="background:var(--warn)"></i>Watch</span><span><i style="background:var(--bad)"></i>At risk</span></div>
+  </header>
+
+  <section class="kpis" id="kpis" aria-label="Portfolio KPIs"></section>
+
+  <section class="card" style="margin-bottom:16px">
+    <div class="card-head"><h2>Portfolio health</h2><span class="muted">Select a project to see its S-curve and variances. Click a column to sort.</span></div>
+    <div style="overflow-x:auto"><table id="tbl">
+      <thead><tr>
+        <th data-k="project_name">Project</th><th data-k="health">Health</th><th data-k="pct_complete">Progress</th>
+        <th class="num" data-k="cpi">CPI</th><th class="num" data-k="spi">SPI</th><th class="num" data-k="bac">Budget (BAC)</th>
+        <th class="num" data-k="eac">Forecast (EAC)</th><th class="num" data-k="vac">Variance at completion</th><th data-k="forecast_finish">Forecast finish</th>
+      </tr></thead><tbody></tbody></table></div>
+  </section>
+
+  <section class="grid">
+    <div class="card">
+      <div class="card-head"><h2 id="scurve-title">S-curve</h2>
+        <label class="muted">Project <select id="pick"></select></label></div>
+      <div class="chart"><canvas id="scurve" aria-label="Cumulative planned value, earned value and actual cost"></canvas></div>
+      <p class="note" id="scurve-note"></p>
+    </div>
+    <div class="card">
+      <div class="card-head"><h2>Cost and schedule efficiency</h2><span class="muted">bubble size = budget</span></div>
+      <div class="chart"><canvas id="quad" aria-label="CPI against SPI for each project"></canvas></div>
+      <p class="note">Top-right is under budget and ahead of schedule. Anything below the CPI 1 line is spending more than it earns; anything left of SPI 1 is behind plan.</p>
+    </div>
+  </section>
+
+  <section class="grid">
+    <div class="card">
+      <div class="card-head"><h2>Cost variance by work package</h2><span class="muted" id="cv-sub"></span></div>
+      <div class="chart"><canvas id="cv" aria-label="Cost variance by cost category"></canvas></div>
+    </div>
+    <div class="card">
+      <div class="card-head"><h2>Change orders</h2><span class="muted" id="co-sub"></span></div>
+      <div class="co" id="co"></div>
+    </div>
+  </section>
+
+  <footer><span>Synthetic data for a fictional Istanbul contractor. Built with DuckDB and Chart.js.</span>
+    <a href="https://github.com/lidianarhoro88/construction-cost-control">Source on GitHub</a></footer>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<script>
+(async () => {
+  const D = await (await fetch('data.json')).json();
+  const css = n => getComputedStyle(document.documentElement).getPropertyValue(n).trim();
+  const C = { wine: css('--wine'), wine2: css('--wine2'), gold: css('--gold'), gold2: css('--gold2'), muted: css('--muted'), line: css('--line'), ok: css('--ok'), warn: css('--warn'), bad: css('--bad'), ink: css('--ink') };
+  Chart.defaults.font.family = '"Plus Jakarta Sans", system-ui, sans-serif';
+  Chart.defaults.color = C.muted; Chart.defaults.borderColor = C.line;
+  const M = v => (v < 0 ? '−' : '') + '₺' + (Math.abs(v) / 1e6).toLocaleString('en-US', { maximumFractionDigits: 1 }) + 'M';
+  const P = v => (v * 100).toFixed(1) + '%';
+  const healthCls = h => h === 'On track' ? 'ok' : h === 'Watch' ? 'warn' : 'bad';
+  const healthCol = h => C[healthCls(h)];
+  const fmtMonth = d => new Date(d).toLocaleDateString('en-GB', { month: 'short', year: 'numeric' });
+
+  document.getElementById('status').textContent = `Status as of ${fmtMonth(D.status_date)} · ${D.projects.length} active projects`;
+
+  // ---- KPIs
+  const sum = k => D.projects.reduce((a, p) => a + p[k], 0);
+  const bac = sum('bac'), ev = sum('ev'), ac = sum('ac'), pv = sum('pv'), vac = sum('vac');
+  const atRisk = D.projects.filter(p => p.health === 'At risk').length;
+  document.getElementById('kpis').innerHTML = [
+    ['Portfolio budget', M(bac), `${M(sum('approved_changes'))} approved changes`],
+    ['Earned value', M(ev), P(ev / bac) + ' of budget'],
+    ['Actual cost', M(ac), M(ev - ac) + ' cost variance'],
+    ['Portfolio CPI', (ev / ac).toFixed(2), 'earned per ₺1 spent'],
+    ['Portfolio SPI', (ev / pv).toFixed(2), 'earned per ₺1 planned'],
+    ['Variance at completion', M(vac), vac < 0 ? 'forecast over budget' : 'forecast under budget'],
+    ['Projects at risk', atRisk, `of ${D.projects.length}`],
+  ].map(([l, v, s]) => `<div class="kpi"><small>${l}</small><b class="${l.includes('Variance') && vac < 0 ? 'neg' : ''}">${v}</b><span>${s}</span></div>`).join('');
+
+  // ---- table
+  let sortK = 'health', sortDir = 1, sel = D.projects.slice().sort((a, b) => a.cpi - b.cpi)[0].project_code;
+  const order = { 'At risk': 0, 'Watch': 1, 'On track': 2 };
+  function drawTable() {
+    const rows = D.projects.slice().sort((a, b) => {
+      const x = sortK === 'health' ? order[a.health] : a[sortK], y = sortK === 'health' ? order[b.health] : b[sortK];
+      return (x > y ? 1 : x < y ? -1 : 0) * sortDir;
+    });
+    document.querySelector('#tbl tbody').innerHTML = rows.map(p => `
+      <tr data-p="${p.project_code}" class="${p.project_code === sel ? 'sel' : ''}" tabindex="0">
+        <td><b>${p.project_name}</b><div class="muted" style="font-size:.78rem">${p.project_code} · ${p.district} · ${p.project_type}</div></td>
+        <td><span class="pill ${healthCls(p.health)}">${p.health}</span></td>
+        <td><span class="bar"><i style="width:${p.pct_complete * 100}%"></i></span>${P(p.pct_complete)}</td>
+        <td class="num ${p.cpi < 1 ? 'neg' : 'pos'}">${p.cpi.toFixed(2)}</td>
+        <td class="num ${p.spi < 1 ? 'neg' : 'pos'}">${p.spi.toFixed(2)}</td>
+        <td class="num">${M(p.bac)}</td><td class="num">${M(p.eac)}</td>
+        <td class="num ${p.vac < 0 ? 'neg' : 'pos'}">${p.vac < 0 ? '' : '+'}${M(p.vac)}</td>
+        <td>${fmtMonth(p.forecast_finish)}${p.forecast_finish > p.planned_finish ? ` <span class="neg" title="Planned ${fmtMonth(p.planned_finish)}">▲</span>` : ''}</td>
+      </tr>`).join('');
+    document.querySelectorAll('#tbl tbody tr').forEach(tr => {
+      const go = () => select(tr.dataset.p);
+      tr.addEventListener('click', go); tr.addEventListener('keydown', e => { if (e.key === 'Enter') go(); });
+    });
+  }
+  document.querySelectorAll('#tbl th').forEach(th => th.addEventListener('click', () => {
+    sortDir = sortK === th.dataset.k ? -sortDir : 1; sortK = th.dataset.k; drawTable();
+  }));
+
+  // ---- picker
+  const pick = document.getElementById('pick');
+  pick.innerHTML = D.projects.map(p => `<option value="${p.project_code}">${p.project_code} · ${p.project_name}</option>`).join('');
+  pick.addEventListener('change', () => select(pick.value));
+
+  // ---- charts
+  const scurve = new Chart(document.getElementById('scurve'), {
+    type: 'line', data: { labels: [], datasets: [] },
+    options: { maintainAspectRatio: false, interaction: { mode: 'index', intersect: false },
+      plugins: { legend: { labels: { boxWidth: 12 } }, tooltip: { callbacks: { label: c => `${c.dataset.label}: ${M(c.parsed.y)}` } } },
+      scales: { y: { ticks: { callback: v => M(v) } }, x: { ticks: { maxTicksLimit: 10 } } } }
+  });
+  const cv = new Chart(document.getElementById('cv'), {
+    type: 'bar', data: { labels: [], datasets: [] },
+    options: { indexAxis: 'y', maintainAspectRatio: false, plugins: { legend: { display: false },
+      tooltip: { callbacks: { label: c => `Cost variance ${M(c.parsed.x)} · CPI ${c.raw.cpi?.toFixed?.(2) ?? ''}` } } },
+      scales: { x: { ticks: { callback: v => M(v) } } } }
+  });
+  new Chart(document.getElementById('quad'), {
+    type: 'bubble',
+    data: { datasets: D.projects.map(p => ({ label: p.project_name, data: [{ x: p.spi, y: p.cpi, r: 6 + Math.sqrt(p.bac / 1e6) / 2.2 }],
+      backgroundColor: healthCol(p.health) + '99', borderColor: healthCol(p.health) })) },
+    options: { maintainAspectRatio: false, plugins: { legend: { display: false },
+      tooltip: { callbacks: { label: c => `${c.dataset.label}: CPI ${c.parsed.y.toFixed(2)}, SPI ${c.parsed.x.toFixed(2)}` } } },
+      scales: { x: { title: { display: true, text: 'SPI (schedule)' }, suggestedMin: .6, suggestedMax: 1.15 },
+                y: { title: { display: true, text: 'CPI (cost)' }, suggestedMin: .85, suggestedMax: 1.1 } } },
+    plugins: [{ id: 'quadrants', beforeDatasetsDraw(ch) {
+      const { ctx, scales: { x, y } } = ch; ctx.save(); ctx.strokeStyle = C.gold; ctx.setLineDash([4, 4]);
+      ctx.beginPath(); ctx.moveTo(x.getPixelForValue(1), y.top); ctx.lineTo(x.getPixelForValue(1), y.bottom);
+      ctx.moveTo(x.left, y.getPixelForValue(1)); ctx.lineTo(x.right, y.getPixelForValue(1)); ctx.stroke(); ctx.restore();
+    } }]
+  });
+
+  function select(code) {
+    sel = code; pick.value = code; drawTable();
+    const p = D.projects.find(x => x.project_code === code);
+    const plan = D.planned.filter(r => r.project_code === code);
+    const actual = D.scurve.filter(r => r.project_code === code);
+    const idx = new Map(actual.map(r => [r.month, r]));
+    scurve.data.labels = plan.map(r => fmtMonth(r.month));
+    scurve.data.datasets = [
+      { label: 'Planned value (PV)', data: plan.map(r => r.pv), borderColor: C.muted, borderDash: [5, 4], pointRadius: 0, borderWidth: 2 },
+      { label: 'Earned value (EV)', data: plan.map(r => idx.get(r.month)?.ev ?? null), borderColor: C.wine, backgroundColor: C.wine, pointRadius: 0, borderWidth: 2.5 },
+      { label: 'Actual cost (AC)', data: plan.map(r => idx.get(r.month)?.ac ?? null), borderColor: C.gold2, backgroundColor: C.gold2, pointRadius: 0, borderWidth: 2.5 },
+    ];
+    scurve.update();
+    document.getElementById('scurve-title').textContent = `S-curve · ${p.project_name}`;
+    const gapCost = p.ev - p.ac, gapSched = p.ev - p.pv;
+    document.getElementById('scurve-note').innerHTML =
+      `${P(p.pct_complete)} complete. Earned value is ${M(Math.abs(gapCost))} ${gapCost < 0 ? 'below' : 'above'} actual cost (CPI ${p.cpi.toFixed(2)}) ` +
+      `and ${M(Math.abs(gapSched))} ${gapSched < 0 ? 'behind' : 'ahead of'} plan (SPI ${p.spi.toFixed(2)}). ` +
+      `To finish on budget the remaining work needs a CPI of <b>${p.tcpi.toFixed(2)}</b>.`;
+
+    const cats = D.categories.filter(c => c.project_code === code).sort((a, b) => a.cost_variance - b.cost_variance);
+    cv.data.labels = cats.map(c => c.cost_category.replace(' (mechanical, electrical, plumbing)', ''));
+    cv.data.datasets = [{ data: cats.map(c => ({ x: c.cost_variance, y: c.cost_category.replace(' (mechanical, electrical, plumbing)', ''), cpi: c.cpi })),
+      backgroundColor: cats.map(c => c.cost_variance < 0 ? C.bad : C.ok), borderRadius: 4 }];
+    cv.update();
+    const worst = cats[0];
+    document.getElementById('cv-sub').textContent = worst && worst.cost_variance < 0 ? `Largest overrun: ${worst.cost_category.split(' (')[0]}` : 'No package over budget';
+
+    const cos = D.changes.filter(c => c.project_code === code);
+    const appr = cos.filter(c => c.status === 'Approved').reduce((a, c) => a + c.amount_try, 0);
+    document.getElementById('co-sub').textContent = `${cos.length} raised · ${M(appr)} approved`;
+    document.getElementById('co').innerHTML = cos.map(c => `<div><code>${c.change_order_id}</code><span>${c.reason}<br><span class="muted" style="font-size:.78rem">${new Date(c.raised_on).toLocaleDateString('en-GB')} · ${c.status}</span></span><b>${M(c.amount_try)}</b></div>`).join('') || '<p class="muted">No change orders.</p>';
+  }
+  select(sel);
+})();
+</script>
+</body>
+</html>
